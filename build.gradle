@@ -6,14 +6,80 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.1.0'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
 allprojects {
     repositories {
-        jcenter()
+//        jcenter()
+        mavenCentral()
+        maven{
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
     }
+}
+ext {
+    // Version.
+    androidPluginVersion = '1.1.0'
+    retroLambdaVersion = '2.4.1'
+    androidAptVersion = '1.4'
+
+    androidSupportVersion = '22.0.0'
+    dagger2Version = '2.0-SNAPSHOT'
+    butterKnifeVerion = '6.1.0'
+    timberVersion = '2.2.+'
+    picassoVersion = '2.5.2'
+    gsonVersion = '2.3.1'
+    retrofitVersion = '1.9.0'
+    urlconnectionVersion = '2.0.0'
+    okhttpVersion = '2.0.0'
+    rxAndroidVersion = '0.24.0'
+    rxJavaVersion = '1.0.0'
+    espressoCoreVersion = '2.0'
+    ottoVersion = '1.3.6'
+
+    // Configuration.
+    config = [
+            minSdkVersion    : 14,
+            compileSdkVersion: 22,
+            buildToolsVersion: '21.1.2',
+            targetSdkVersion : 21
+    ]
+
+    plugin = [
+            androidPlugin: "com.android.tools.build:gradle:${androidPluginVersion}",
+            retroLambda  : "me.tatarka:gradle-retrolambda:${retroLambdaVersion}",
+            androidApt   : "com.neenbedankt.gradle.plugins:android-apt:${androidAptVersion}"
+    ]
+
+    dependency = [
+            // Android Support Libraries
+            supportv4              : "com.android.support:support-v4:${androidSupportVersion}",
+            cardviewv7             : "com.android.support:cardview-v7:${androidSupportVersion}",
+            appcompatv7            : "com.android.support:appcompat-v7:${androidSupportVersion}",
+            gridlayoutv7           : "com.android.support:gridlayout-v7:${androidSupportVersion}",
+            recyclerviewv7         : "com.android.support:recyclerview-v7:${androidSupportVersion}",
+
+            //Dagger2 Dependencies Injection.
+            dagger2                 : "com.google.dagger:dagger:${dagger2Version}",
+            dagger2Compiler         : "com.google.dagger:dagger-compiler:${dagger2Version}",
+
+            // View injection.
+            butterknife            : "com.jakewharton:butterknife:${butterKnifeVerion}",
+
+            // Logging
+            timber                 : "com.jakewharton.timber:timber:${timberVersion}",
+
+            // Image Loader
+            picasso                : "com.squareup.picasso:picasso:${picassoVersion}",
+
+            // REST client
+            gson                   : "com.google.code.gson:gson:${gsonVersion}",
+            retrofit               : "com.squareup.retrofit:retrofit:${retrofitVersion}",
+            urlconnection          : "com.squareup.okhttp:okhttp-urlconnection:${urlconnectionVersion}",
+            okhttp                 : "com.squareup.okhttp:okhttp:${okhttpVersion}",
+            rxAndroid              : "io.reactivex:rxandroid:${rxAndroidVersion}",
+            rxJava                 : "io.reactivex:rxjava:${rxJavaVersion}",
+            otto                   : "com.squareup:otto:${ottoVersion}",
+    ]
 }
