@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
                     mCountDownTimer.cancel();
                     textViewShowTime.clearAnimation();
                 }
-                mCountDownTimer = new CountDownTimer(seekBarProgress.getProgress() * 1000, 1000) {
+                mCountDownTimer = new CountDownTimer(seekBarProgress.getProgress() * 1000, 250) {
                     @Override
                     public void onTick(long millisUntilFinished) {
                         Timber.e("Tick of Progress " + millisUntilFinished);
@@ -63,8 +63,6 @@ public class MainActivity extends Activity {
                     public void onFinish() {
                         Timber.e("Finish()");
                         textViewShowTime.clearAnimation();
-                        textViewShowTime.setText(String.format("%03d", 0 / 1000));
-                        circleProgressBar.setProgressWithAnimation(0);
                     }
                 };
                 mCountDownTimer.start();
