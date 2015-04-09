@@ -2,105 +2,76 @@ package com.active.sunnypoint;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.SeekBar;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import cvnhan.android.widget.CircleProgressBar;
+import java.util.ArrayList;
+
 import timber.log.Timber;
 
 
 public class MainActivity extends Activity {
-    CountDownTimer mCountDownTimer;
 
-    @InjectView(R.id.custom_progressBar)
-    CircleProgressBar circleProgressBar;
-    @InjectView(R.id.seekBar_progress)
-    SeekBar seekBarProgress;
-    @InjectView(R.id.seekBar_thickness)
-    SeekBar seekBarThickness;
-    @InjectView(R.id.clocktxt)
-    TextView textViewShowTime;
-    Animation anim;
+    private AlphabetListAdapter adapter;
 
+    ListView getListView() {
+
+        return (ListView) findViewById(R.id.list);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Timber.tag(MainActivity.class.getSimpleName());
-        setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
-//        textViewShowTime.setTextAppearance(getApplicationContext(), R.style.blinkText);
-        anim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
-        textViewShowTime.setText(String.format("%03d",(int)circleProgressBar.getProgress()));
-        seekBarProgress.setProgress((int) circleProgressBar.getProgress());
-        seekBarProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-//                if (b)
-//                    circleProgressBar.setProgressWithAnimation(i);
-//                else
-//                    circleProgressBar.setProgress(i);
+        setContentView(R.layout.list_alphabet);
 
-                Timber.e(i + "");
+//        ButterKnife.inject(this);
 
-                if(mCountDownTimer!=null){
-                    mCountDownTimer.cancel();
-                    textViewShowTime.clearAnimation();
-                }
-                mCountDownTimer = new CountDownTimer(seekBarProgress.getProgress() * 1000, 250) {
-                    @Override
-                    public void onTick(long millisUntilFinished) {
-                        Timber.e("Tick of Progress " + millisUntilFinished);
-                        circleProgressBar.setProgressWithAnimation(millisUntilFinished / 1000);
-                        textViewShowTime.setText(String.format("%03d", millisUntilFinished / 1000));
-                    }
+        ArrayList<Info> rows = new ArrayList<Info>();
+        rows.add(new Info("Use 827 Points 03/27"));
+        rows.add(new Info("03/26 Get 587 Points"));
+        rows.add(new Info("Get 500 Points 03/16"));
+        rows.add(new Info("03/05 Get 136 Points"));
+        rows.add(new Info("2015 March",true));
+        rows.add(new Info("Use 827 Points 03/27"));
+        rows.add(new Info("03/26 Get 587 Points"));
+        rows.add(new Info("Get 500 Points 03/16"));
+        rows.add(new Info("03/05 Get 136 Points"));
+        rows.add(new Info("2015 March",true));
+        rows.add(new Info("Use 827 Points 03/27"));
+        rows.add(new Info("03/26 Get 587 Points"));
+        rows.add(new Info("Get 500 Points 03/16"));
+        rows.add(new Info("03/05 Get 136 Points"));
+        rows.add(new Info("2015 March",true));
+        rows.add(new Info("Use 827 Points 03/27"));
+        rows.add(new Info("03/26 Get 587 Points"));
+        rows.add(new Info("Get 500 Points 03/16"));
+        rows.add(new Info("03/05 Get 136 Points"));
+        rows.add(new Info("2015 March",true));
+        rows.add(new Info("Use 827 Points 03/27"));
+        rows.add(new Info("03/26 Get 587 Points"));
+        rows.add(new Info("Get 500 Points 03/16"));
+        rows.add(new Info("03/05 Get 136 Points"));
+        rows.add(new Info("2015 March",true));
+        adapter = new AlphabetListAdapter(rows);
+        getListView().setAdapter(adapter);
 
-                    @Override
-                    public void onFinish() {
-                        Timber.e("Finish()");
-                        textViewShowTime.clearAnimation();
-                    }
-                };
-                mCountDownTimer.start();
-                textViewShowTime.startAnimation(anim);
-            }
+    }
 
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-        seekBarThickness.setProgress((int) circleProgressBar.getStrokeWidth());
-        seekBarThickness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                circleProgressBar.setStrokeWidth(i);
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
+    public void updateList() {
+        TextView tmpTV;
+            tmpTV = new TextView(this);
+            tmpTV.setGravity(Gravity.CENTER);
+            tmpTV.setTextSize(15);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1);
+            tmpTV.setLayoutParams(params);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.reset(this);
+//        ButterKnife.reset(this);
     }
 }

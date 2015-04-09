@@ -52,13 +52,12 @@ dependencies {
     compile project(':widget')
     def dependency = rootProject.ext.dependency
 
-    compile dependency.appcompatv7
     compile dependency.recyclerviewv7
+    compile dependency.cardviewv7
 
     // Inject dependencies
-    compile dependency.dagger2
-    apt dependency.dagger2Compiler
-    provided 'org.glassfish:javax.annotation:10.0-b28'
+    compile dependency.dagger
+    apt dependency.daggerCompiler
 
     // View Inject dependencies
     compile dependency.butterknife
@@ -73,7 +72,4 @@ dependencies {
     compile dependency.picasso
 
     compile dependency.otto
-
-    compile dependency.gson
-    compile dependency.retrofit
 }
