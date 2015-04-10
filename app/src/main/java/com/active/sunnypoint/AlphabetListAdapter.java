@@ -8,6 +8,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -80,6 +82,9 @@ public class AlphabetListAdapter extends BaseAdapter {
             holder.title.setText(item.info);
         }
 
+        Animation anim= AnimationUtils.loadAnimation(parent.getContext(),R.anim.fade_anim);
+
+        view.startAnimation(anim);
         return view;
     }
 
