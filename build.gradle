@@ -22,7 +22,7 @@ ext {
 
     androidSupportVersion = '21.0.3'
     daggerVersion = '1.2.2'
-    butterKnifeVerion = '6.1.0'
+    butterKnifeVerion = '7.0.1'
     prettySharedPreferencesVersion = '1.0.2'
     timberVersion = '2.2.+'
     picassoVersion = '2.5.2'
