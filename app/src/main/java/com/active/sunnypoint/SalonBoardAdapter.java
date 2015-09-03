@@ -1,7 +1,5 @@
 package com.active.sunnypoint;
 
-import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,15 +30,7 @@ public class SalonBoardAdapter extends RecyclerView.Adapter<SalonBoardAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        GradientDrawable border = new GradientDrawable();
-        border.setColor(0x00000000);
-        border.setCornerRadius(5);
-        border.setStroke(1, Utils.randomColor(0xFF));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            holder.viewSalonBoardItem.setBackgroundDrawable(border);
-        } else {
-            holder.viewSalonBoardItem.setBackground(border);
-        }
+
         holder.txtView.setText(mDataset[position]);
 
 

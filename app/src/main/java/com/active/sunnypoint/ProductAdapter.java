@@ -1,12 +1,13 @@
 package com.active.sunnypoint;
 
-import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.active.sunnypoint.dagger.ControlBus;
+import com.squareup.otto.Bus;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -15,10 +16,32 @@ import butterknife.ButterKnife;
  * Created by NhanCao on 01-Sep-15.
  */
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
+    Bus bus;
     private String[] mDataset;
+    private Integer[] colorList;
 
-    public ProductAdapter(String[] myDataset) {
+    public ProductAdapter(String[] myDataset, Bus bus) {
         mDataset = myDataset;
+        this.bus = bus;
+        initialColorList();
+    }
+
+    private void initialColorList() {
+        //generate color list
+        colorList = new Integer[mDataset.length];
+        for (int i = 0; i < mDataset.length; i++) {
+            colorList[i] = Utils.randomColor(0xFF);
+        }
+    }
+
+    public void updateUiColorList() {
+
+
+        notifyDataSetChanged();
+    }
+
+    public Integer[] getColorList() {
+        return colorList;
     }
 
     @Override
@@ -31,17 +54,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        GradientDrawable border = new GradientDrawable();
-        border.setColor(0x00000000);
-        border.setCornerRadius(5);
-        border.setStroke(1, Utils.randomColor(0xFF));
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
-            holder.viewProductItem.setBackgroundDrawable(border);
-        } else {
-            holder.viewProductItem.setBackground(border);
-        }
-
+        Utils.setBackground(holder.viewProductItem, colorList[position]);
         holder.mTextView.setText(mDataset[position]);
+        holder.viewProductItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bus.post(new ControlBus(this, position));
+            }
+        });
     }
 
     @Override

@@ -4,6 +4,14 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+
+import com.active.sunnypoint.dagger.ControlBus;
+import com.active.sunnypoint.dagger.DaggerUiComponent;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -19,10 +27,15 @@ public class MainActivity extends Activity {
     RecyclerView.LayoutManager viewProductLayoutManager;
     RecyclerView.Adapter viewSalonBoardAdapter;
     RecyclerView.LayoutManager viewSalonBoardLayoutManager;
+    @Inject
+    Bus bus;
+    private String TAG = MainActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DaggerUiComponent.builder().singletonComponent(((BaseApp) getApplication()).getSingletonComponent()).build().inject(this);
+        bus.register(this);
         Timber.tag(MainActivity.class.getSimpleName());
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -30,14 +43,16 @@ public class MainActivity extends Activity {
     }
 
     private void setupViews() {
+        int sizeProduct = 20;
+
         viewProduct.setHasFixedSize(true);
         viewProductLayoutManager = new LinearLayoutManager(this);
         viewProduct.setLayoutManager(viewProductLayoutManager);
-        String[] datasetProduct = new String[20];
-        for (int i = 0; i < 20; i++) {
+        String[] datasetProduct = new String[sizeProduct];
+        for (int i = 0; i < sizeProduct; i++) {
             datasetProduct[i] = String.valueOf(i);
         }
-        viewProductAdapter = new ProductAdapter(datasetProduct);
+        viewProductAdapter = new ProductAdapter(datasetProduct, bus);
         viewProduct.setAdapter(viewProductAdapter);
 
         viewSalonBoard.setHasFixedSize(true);
@@ -51,8 +66,11 @@ public class MainActivity extends Activity {
         viewSalonBoard.setAdapter(viewSalonBoardAdapter);
 
 
+    }
 
-
+    @Subscribe
+    public void controlBus(ControlBus busData) {
+        Log.e(TAG, "controlBus " + busData.data);
     }
 
 }

@@ -58,6 +58,7 @@ dependencies {
     // Inject dependencies
     compile dependency.dagger
     apt dependency.daggerCompiler
+    provided dependency.generatedAnnotation;
 
     // View Inject dependencies
     compile dependency.butterknife

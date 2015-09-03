@@ -21,7 +21,7 @@ ext {
     androidAptVersion = '1.4'
 
     androidSupportVersion = '21.0.3'
-    daggerVersion = '1.2.2'
+    daggerVersion = '2.0'
     butterKnifeVerion = '7.0.1'
     prettySharedPreferencesVersion = '1.0.2'
     timberVersion = '2.2.+'
@@ -35,6 +35,7 @@ ext {
     espressoCoreVersion = '2.0'
     testingSupportLibVersion = '0.1'
     ottoVersion = '1.3.6'
+    generateAnnotationVersion = '10.0-b28'
 
     // Configuration.
     config = [
@@ -59,8 +60,8 @@ ext {
             recyclerviewv7         : "com.android.support:recyclerview-v7:${androidSupportVersion}",
 
             // Dependencies Injection.
-            dagger                 : "com.squareup.dagger:dagger:${daggerVersion}",
-            daggerCompiler         : "com.squareup.dagger:dagger-compiler:${daggerVersion}",
+            dagger             : "com.google.dagger:dagger:${daggerVersion}",
+            daggerCompiler     : "com.google.dagger:dagger-compiler:${daggerVersion}",
 
             // View injection.
             butterknife            : "com.jakewharton:butterknife:${butterKnifeVerion}",
@@ -84,5 +85,7 @@ ext {
             espressoCore           : "com.android.support.test.espresso:espresso-core:${espressoCoreVersion}",
             testingSupportLib      : "com.android.support.test:testing-support-lib:${testingSupportLibVersion}",
             otto                   : "com.squareup:otto:${ottoVersion}",
+            generatedAnnotation: "org.glassfish:javax.annotation:${generateAnnotationVersion}"
+
     ]
 }
