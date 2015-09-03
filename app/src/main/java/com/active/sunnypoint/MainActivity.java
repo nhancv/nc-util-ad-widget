@@ -44,7 +44,7 @@ public class MainActivity extends Activity {
     }
 
     private void setupViews() {
-        int sizeProduct = 20;
+        int sizeProduct = 15;
 
         viewProduct.setHasFixedSize(true);
         viewProductLayoutManager = new LinearLayoutManager(this);
@@ -55,16 +55,32 @@ public class MainActivity extends Activity {
             datasetProduct[i] = String.valueOf(i);
             mapping[i] = -1;
         }
+        datasetProduct[0]="スカルプエステ";
+        datasetProduct[1]="４Dフェイシャル　お試しコース";
+        datasetProduct[2]="ハーバルシー　全顔　初回";
+        datasetProduct[3]="ハイパーナイフ";
+        datasetProduct[4]="Color & Highlights";
+        datasetProduct[5]="スカルプエステ（デコルテ・背中付き）";
+        datasetProduct[6]="リペア　1本";
+
+
         viewProductAdapter = new ProductAdapter(datasetProduct, bus, mapping);
         viewProduct.setAdapter(viewProductAdapter);
 
         viewSalonBoard.setHasFixedSize(true);
         viewSalonBoardLayoutManager = new LinearLayoutManager(this);
         viewSalonBoard.setLayoutManager(viewSalonBoardLayoutManager);
-        String[] datasetSalonBoard = new String[15];
-        for (int i = 0; i < 15; i++) {
+        String[] datasetSalonBoard = new String[10];
+        for (int i = 0; i < datasetSalonBoard.length; i++) {
             datasetSalonBoard[i] = String.valueOf(i);
         }
+        datasetSalonBoard[0]="ハンドネイルケア";
+        datasetSalonBoard[1]="４Dフェイシャル　スペシャルケア";
+        datasetSalonBoard[2]="４Dフェイシャル　スペシャルケア_123";
+        datasetSalonBoard[3]="スカルプエステ（デコルテ・背中付き）";
+        datasetSalonBoard[4]="お好きなところ８箇所";
+
+
         viewSalonBoardAdapter = new SalonBoardAdapter(datasetSalonBoard, bus, mapping);
         viewSalonBoard.setAdapter(viewSalonBoardAdapter);
 
@@ -81,6 +97,9 @@ public class MainActivity extends Activity {
         } else if (busData.className instanceof SalonBoardAdapter) {
             Log.e(TAG, "SalonBoardAdapter " + busData.dataCommand);
             if (busData.dataCommand == -2) {
+                for (int i = 0; i < mapping.length; i++) {
+                    if (mapping[i] == viewSalonBoardAdapter.getItemClickPos()) mapping[i] = -1;
+                }
                 mapping[viewProductAdapter.getItemClickPos()] = viewSalonBoardAdapter.getItemClickPos();
                 viewSalonBoardAdapter.updateColorList(viewProductAdapter.getItemClickColor());
                 viewSalonBoardAdapter.paired();
