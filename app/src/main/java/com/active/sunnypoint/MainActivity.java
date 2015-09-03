@@ -23,13 +23,14 @@ public class MainActivity extends Activity {
     RecyclerView viewProduct;
     @Bind(R.id.viewSalonBoard)
     RecyclerView viewSalonBoard;
-    RecyclerView.Adapter viewProductAdapter;
+    ProductAdapter viewProductAdapter;
     RecyclerView.LayoutManager viewProductLayoutManager;
-    RecyclerView.Adapter viewSalonBoardAdapter;
+    SalonBoardAdapter viewSalonBoardAdapter;
     RecyclerView.LayoutManager viewSalonBoardLayoutManager;
     @Inject
     Bus bus;
     private String TAG = MainActivity.class.getName();
+    private Integer[] mapping;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +50,12 @@ public class MainActivity extends Activity {
         viewProductLayoutManager = new LinearLayoutManager(this);
         viewProduct.setLayoutManager(viewProductLayoutManager);
         String[] datasetProduct = new String[sizeProduct];
+        mapping = new Integer[sizeProduct];
         for (int i = 0; i < sizeProduct; i++) {
             datasetProduct[i] = String.valueOf(i);
+            mapping[i] = -1;
         }
-        viewProductAdapter = new ProductAdapter(datasetProduct, bus);
+        viewProductAdapter = new ProductAdapter(datasetProduct, bus, mapping);
         viewProduct.setAdapter(viewProductAdapter);
 
         viewSalonBoard.setHasFixedSize(true);
@@ -62,7 +65,7 @@ public class MainActivity extends Activity {
         for (int i = 0; i < 15; i++) {
             datasetSalonBoard[i] = String.valueOf(i);
         }
-        viewSalonBoardAdapter = new SalonBoardAdapter(datasetSalonBoard);
+        viewSalonBoardAdapter = new SalonBoardAdapter(datasetSalonBoard, bus, mapping);
         viewSalonBoard.setAdapter(viewSalonBoardAdapter);
 
 
@@ -70,7 +73,22 @@ public class MainActivity extends Activity {
 
     @Subscribe
     public void controlBus(ControlBus busData) {
-        Log.e(TAG, "controlBus " + busData.data);
+
+        if (busData.className instanceof ProductAdapter) {
+            Log.e(TAG, "ProductAdapter " + busData.dataCommand);
+            viewSalonBoardAdapter.setProductTouchColor(viewProductAdapter.getItemClickColor());
+
+        } else if (busData.className instanceof SalonBoardAdapter) {
+            Log.e(TAG, "SalonBoardAdapter " + busData.dataCommand);
+            if (busData.dataCommand == -2) {
+                mapping[viewProductAdapter.getItemClickPos()] = viewSalonBoardAdapter.getItemClickPos();
+                viewSalonBoardAdapter.updateColorList(viewProductAdapter.getItemClickColor());
+                viewSalonBoardAdapter.paired();
+                viewProductAdapter.paired();
+            }
+
+        }
+
     }
 
 }

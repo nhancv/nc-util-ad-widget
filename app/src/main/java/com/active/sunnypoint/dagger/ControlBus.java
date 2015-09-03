@@ -5,10 +5,10 @@ package com.active.sunnypoint.dagger;
  */
 public class ControlBus {
     public Object className;
-    public Object data;
+    public int dataCommand;
 
-    public ControlBus(Object className, Object data) {
+    public ControlBus(Object className, int dataCommand) {
         this.className = className;
-        this.data = data;
+        this.dataCommand = dataCommand;
     }
 }

@@ -19,10 +19,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     Bus bus;
     private String[] mDataset;
     private Integer[] colorList;
+    private int positionTouch = -1;
+    private Integer[] mapping;
 
-    public ProductAdapter(String[] myDataset, Bus bus) {
+    public ProductAdapter(String[] myDataset, Bus bus, Integer[] mapping) {
         mDataset = myDataset;
         this.bus = bus;
+        this.mapping = mapping;
         initialColorList();
     }
 
@@ -30,7 +33,22 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         //generate color list
         colorList = new Integer[mDataset.length];
         for (int i = 0; i < mDataset.length; i++) {
-            colorList[i] = Utils.randomColor(0xFF);
+            int color = Utils.randomColor(0xFF);
+            while (true) {
+                boolean check = false;
+                for (int j = 0; j < i; j++) {
+                    if (color == colorList[j]) {
+                        check = true;
+                        break;
+                    }
+                }
+                if (check) {
+                    color = Utils.randomColor(0xFF);
+                } else {
+                    colorList[i] = color;
+                    break;
+                }
+            }
         }
     }
 
@@ -44,6 +62,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return colorList;
     }
 
+    public void setMapping(Integer[] mapping) {
+        this.mapping = mapping;
+    }
+
     @Override
     public ProductAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                         int viewType) {
@@ -52,21 +74,61 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return new ViewHolder(v);
     }
 
+    private boolean checkPaired(int position) {
+        return mapping[position] != -1;
+    }
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Utils.setBackground(holder.viewProductItem, colorList[position]);
+        if (position != positionTouch) {
+            if (checkPaired(position)) {
+                Utils.setBackground(holder.viewProductItem, colorList[position], colorList[position]);
+            } else {
+                Utils.setBackground(holder.viewProductItem, colorList[position]);
+            }
+        } else {
+            Utils.setBackground(holder.viewProductItem, colorList[positionTouch], 0xFF6699FF);
+        }
         holder.mTextView.setText(mDataset[position]);
         holder.viewProductItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bus.post(new ControlBus(this, position));
+                itemClick(v, position);
+                bus.post(new ControlBus(ProductAdapter.this, positionTouch));
             }
         });
+    }
+
+    public void itemClick(View v, int position) {
+        if (positionTouch == position) positionTouch = -1;
+        else positionTouch = position;
+        notifyDataSetChanged();
+    }
+
+    public boolean hasItemClick() {
+        return (positionTouch != -1);
+    }
+
+    public int getItemClickPos() {
+        return positionTouch;
+    }
+
+    public int getItemClickColor() {
+        return (positionTouch == -1) ? -1 : colorList[positionTouch];
+    }
+
+    public String getItemClick() {
+        return (positionTouch == -1) ? null : mDataset[positionTouch];
     }
 
     @Override
     public int getItemCount() {
         return mDataset.length;
+    }
+
+    public void paired() {
+        positionTouch = -1;
+        notifyDataSetChanged();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

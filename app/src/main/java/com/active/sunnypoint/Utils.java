@@ -10,6 +10,8 @@ import android.view.View;
  */
 public class Utils {
 
+    public static int COLORDEFAULT = 0xff4fa5d5;
+
     public static int randomColor(int alpha) {
         int r = (int) (0xff * Math.random());
         int g = (int) (0xff * Math.random());
@@ -23,6 +25,18 @@ public class Utils {
         border.setColor(0x00000000);
         border.setCornerRadius(5);
         border.setStroke(1, color);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+            view.setBackgroundDrawable(border);
+        } else {
+            view.setBackground(border);
+        }
+    }
+
+    public static void setBackground(View view, int colorStroke, int colorBackground) {
+        GradientDrawable border = new GradientDrawable();
+        border.setColor(colorBackground);
+        border.setCornerRadius(5);
+        border.setStroke(1, colorStroke);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
             view.setBackgroundDrawable(border);
         } else {
