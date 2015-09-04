@@ -10,7 +10,7 @@ buildscript {
 }
 
 apply plugin: 'com.android.application'
-apply plugin: 'retrolambda'
+apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
@@ -41,11 +41,9 @@ android {
     }
     // Configure for RetroLambda
     compileOptions {
-        encoding "UTF-8"
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    compileOptions.encoding = 'ISO-8859-1'
 }
 
 dependencies {

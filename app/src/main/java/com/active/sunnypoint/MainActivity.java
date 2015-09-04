@@ -63,7 +63,6 @@ public class MainActivity extends Activity {
         datasetProduct[5]="スカルプエステ（デコルテ・背中付き）";
         datasetProduct[6]="リペア　1本";
 
-
         viewProductAdapter = new ProductAdapter(datasetProduct, bus, mapping);
         viewProduct.setAdapter(viewProductAdapter);
 
@@ -80,7 +79,6 @@ public class MainActivity extends Activity {
         datasetSalonBoard[3]="スカルプエステ（デコルテ・背中付き）";
         datasetSalonBoard[4]="お好きなところ８箇所";
 
-
         viewSalonBoardAdapter = new SalonBoardAdapter(datasetSalonBoard, bus, mapping);
         viewSalonBoard.setAdapter(viewSalonBoardAdapter);
 
@@ -92,6 +90,7 @@ public class MainActivity extends Activity {
 
         if (busData.className instanceof ProductAdapter) {
             Log.e(TAG, "ProductAdapter " + busData.dataCommand);
+            viewSalonBoardAdapter.setProductTouchPosition(viewProductAdapter.getItemClickPos());
             viewSalonBoardAdapter.setProductTouchColor(viewProductAdapter.getItemClickColor());
 
         } else if (busData.className instanceof SalonBoardAdapter) {

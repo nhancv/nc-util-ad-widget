@@ -21,9 +21,10 @@ public class SalonBoardAdapter extends RecyclerView.Adapter<SalonBoardAdapter.Vi
     private String TAG = SalonBoardAdapter.class.getName();
     private String[] mDataset;
     private Integer[] colorList;
+    private Integer[] mapping;
     private int positionTouch = -1;
     private int productTouchColor = -1;
-    private Integer[] mapping;
+    private int productTouchPosition = -1;
 
     public SalonBoardAdapter(String[] myDataset, Bus bus, Integer[] mapping) {
         mDataset = myDataset;
@@ -40,13 +41,13 @@ public class SalonBoardAdapter extends RecyclerView.Adapter<SalonBoardAdapter.Vi
         }
     }
 
-    public int getProductTouchColor() {
-        return productTouchColor;
-    }
-
     public void setProductTouchColor(int productTouchColor) {
         this.productTouchColor = productTouchColor;
         notifyDataSetChanged();
+    }
+
+    public void setProductTouchPosition(int productTouchPosition) {
+        this.productTouchPosition = productTouchPosition;
     }
 
     @Override
@@ -78,7 +79,10 @@ public class SalonBoardAdapter extends RecyclerView.Adapter<SalonBoardAdapter.Vi
                 Utils.setBackground(holder.viewSalonBoardItem, colorList[positionTouch], 0xFF6699FF);
             } else {
                 Utils.setBackground(holder.viewSalonBoardItem, productTouchColor, 0xFF6699FF);
-                holder.btnSave.setEnabled(true);
+                if (productTouchPosition > -1 && mapping[productTouchPosition] == positionTouch)
+                    holder.btnSave.setEnabled(false);
+                else
+                    holder.btnSave.setEnabled(true);
             }
         }
 
